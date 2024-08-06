@@ -3,6 +3,10 @@
     require '../../includes/config/database.php';
     $db = conectarDB();
 
+    // Consultar para obtener los vendedores
+    $consulta = "SELECT * FROM vendedores";
+    $resultado = mysqli_query($db, $consulta);
+
     // Arreglo con mensajes de errores
     $errores = [];
 
@@ -27,6 +31,7 @@
         $wc = $_POST['wc'];
         $estacionamiento = $_POST['estacionamiento'];
         $vendedores_id = $_POST['vendedor'];
+        $creado = date('Y/m/d');
 
         if(!$titulo) {
             $errores[] = 'Debes añadir un titulo';
@@ -63,14 +68,15 @@
         // Revisar que el array de errores este vacio
         if(empty($errores)) {
             // Insertar en la base de datos
-            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedores_id ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$vendedores_id' )";
+            $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedores_id' )";
 
             // echo $query;
 
             $resultado = mysqli_query($db, $query);
 
             if($resultado) {
-                echo "Insertado Correctamente";
+                // Redireccionar al usuario.
+                header('Location: /admin');
             }
         }
 
@@ -116,10 +122,10 @@
                 <input type="number" id="habitaciones" name="habitaciones" placeholder="Ej: 3" min="1" max="9" value="<?php echo $habitaciones; ?>>
 
                 <label for="wc">Baños:</label>
-                <input type="number" id="wc" name="wc" placeholder="Ej: 3" min="1" max="9" value="<?php echo $wc; ?>>
+                <input type="number" id="wc" name="wc" placeholder="Ej: 3" min="1" max="9" value="<?php echo $wc; ?>" >
 
                 <label for="estacionamiento">Estacionamiento:</label>
-                <input type="number" id="estacionamiento" name="estacionamiento" placeholder="Ej: 3" min="1" max="9" value="<?php echo $estacionamiento; ?>>
+                <input type="number" id="estacionamiento" name="estacionamiento" placeholder="Ej: 3" min="1" max="9" value="<?php echo $estacionamiento; ?>" >
             </fieldset>
 
             <fieldset>
@@ -127,8 +133,9 @@
 
                 <select name="vendedor">
                     <option value="">-- Seleccione --</option>
-                    <option value="1">Ivan</option>
-                    <option value="2">Karen</option>
+                    <?php while($vendedor = mysqli_fetch_assoc($resultado)): ?>
+                        <option <?php echo $vendedores_id === $vendedor['id']  ? 'selected' : ''; ?> value="<?php echo $vendedor['id']; ?>"><?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?></option>
+                    <?php endwhile; ?>
                 </select>
             </fieldset>
 
