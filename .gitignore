@@ -3,3 +3,6 @@ node_modules
 
 # Compilacion
 build
+
+# Archivos específicos de PHP
+info.php
