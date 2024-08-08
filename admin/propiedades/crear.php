@@ -24,9 +24,9 @@
         // var_dump($_POST);
         // echo "</pre>";
 
-        // echo "<pre>";
-        // var_dump($_FILES);
-        // echo "</pre>";
+        echo "<pre>";
+        var_dump($_FILES);
+        echo "</pre>";
 
 
         $titulo = mysqli_real_escape_string( $db, $_POST['titulo']);
@@ -74,8 +74,8 @@
             $errores[] = 'La imagen es obligatoria';
         }
 
-        // Validar por tamaño (100 kb máximo)
-        $medida = 1000 * 100;
+        // Validar por tamaño (1mb máximo)
+        $medida = 1000 * 1000;
 
         if($imagen['size'] > $medida) {
             $errores[] = 'La imagen es muy pesada';
@@ -87,6 +87,20 @@
 
         // Revisar que el array de errores este vacio
         if(empty($errores)) {
+
+            /* SUBIDA DE ARCHIVOS */
+
+            // Crear carpeta'
+            $carpetaImagenes = '../../imagenes';
+
+            if(!is_dir($carpetaImagenes)) {
+                mkdir($carpetaImagenes);
+            }
+            
+            // Subir imagen
+            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . '/archivo.jpg');
+            exit;
+
             // Insertar en la base de datos
             $query = " INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, creado, vendedores_id ) VALUES ( '$titulo', '$precio', '$descripcion', '$habitaciones', '$wc', '$estacionamiento', '$creado', '$vendedores_id' )";
 
