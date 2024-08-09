@@ -27,7 +27,6 @@
             $query = "SELECT * FROM usuarios WHERE email = '{$email}' ";
             $resultado = mysqli_query($db, $query);
 
-            
 
             if($resultado->num_rows) {
                 // Revisar so el password es correcto
