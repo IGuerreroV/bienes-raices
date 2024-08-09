@@ -6,3 +6,6 @@ build
 
 # Archivos específicos de PHP
 info.php
+
+# Autenticación de usuarios
+# usuario.php
