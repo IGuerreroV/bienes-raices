@@ -8,10 +8,13 @@ $db = conectarDB();
 $email = 'correo@correo.com';
 $password = '123456';
 
-// Query para crear el usuasrio
-$query = " INSERT INTO usuarios (email, password) VALUES ( '{$email}', '{$password}'); ";
+$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-echo $query;
+// Query para crear el usuasrio
+$query = " INSERT INTO usuarios (email, password) VALUES ( '{$email}', '{$passwordHash}'); ";
+
+// echo $query;
+
 
 // Agregar a la base de datos
 mysqli_query($db, $query);
