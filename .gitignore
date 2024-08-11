@@ -9,3 +9,6 @@ info.php
 
 # Autenticación de usuarios
 # usuario.php
+
+# Composer
+/vendor/
