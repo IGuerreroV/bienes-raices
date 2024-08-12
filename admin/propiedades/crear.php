@@ -3,6 +3,8 @@
     require '../../includes/app.php';
 
     use App\Propiedad;
+    use Intervention\Image\ImageManager as Image;
+    use Intervention\Image\Drivers\Gd\Driver;
 
     estaAutenticado();
 
@@ -29,10 +31,26 @@
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+        /* Crea una nueva Instancia */
         $propiedad = new Propiedad($_POST);
 
+        /* SUBIDA DE ARCHIVOS */
+
+
+
+        // Generar un nombre unico
+        $nombreImagen = md5( uniqid( rand(), true ) ) . '.jpg';
+
+        // Setear la imagen
+        // Realiza un resize a la imagen con intervention
+        if($_FILES['imagen']['tmp_name']) {
+            $manager = new Image(Driver::class);
+            $image = $manager->read($_FILES['imagen']['tmp_name'])->cover(800,600);
+            $propiedad->setImagen($nombreImagen);
+        }
+
+        // Validar
         $errores = $propiedad->validar();
-        
 
         // echo "<pre>";
         // var_dump($_POST);
@@ -48,34 +66,19 @@
 
         // Revisar que el array de errores este vacio
         if(empty($errores)) {
-            $propiedad->guardar();
 
-                    
-            // Asignar files hacia una variable
-            $imagen = $_FILES['imagen'];
-
-            /* SUBIDA DE ARCHIVOS */
-
-            // Crear carpeta'
-            $carpetaImagenes = '../../imagenes/';
-
-            if(!is_dir($carpetaImagenes)) {
-                mkdir($carpetaImagenes);
+            // Crear la carpeta para subir imagenes
+            if(!is_dir(CARPETA_IMAGENES)) {
+                mkdir(CARPETA_IMAGENES);
             }
 
-            // Generar un nombre unico
-            $nombreImagen = md5( uniqid( rand(), true ) ) . '.jpg';
+            // Guarda la imagen en el servidor
+            $image->save(CARPETA_IMAGENES . $nombreImagen);
 
-            
-            // Subir imagen
-            move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
+            // Guarda en la base de datos
+            $resultado = $propiedad->guardar();
 
-
-
-            // echo $query;
-
-            $resultado = mysqli_query($db, $query);
-
+            // Mensaje de exito o error
             if($resultado) {
                 // Redireccionar al usuario.
                 header('Location: /admin?resultado=1');
