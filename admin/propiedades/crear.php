@@ -28,8 +28,6 @@
         /* Crea una nueva Instancia */
         $propiedad = new Propiedad($_POST['propiedad']);
 
-        debuguear($propiedad);
-
         /* SUBIDA DE ARCHIVOS */
         // Generar un nombre unico
         $nombreImagen = md5( uniqid( rand(), true ) ) . '.jpg';
@@ -69,13 +67,8 @@
             $image->save(CARPETA_IMAGENES . $nombreImagen);
 
             // Guarda en la base de datos
-            $resultado = $propiedad->guardar();
+            $propiedad->guardar();
 
-            // Mensaje de exito o error
-            if($resultado) {
-                // Redireccionar al usuario.
-                header('Location: /admin?resultado=1');
-            }
         }
         
     }
