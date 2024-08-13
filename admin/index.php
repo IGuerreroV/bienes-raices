@@ -4,9 +4,13 @@
     estaAutenticado();
 
     use App\Propiedad;
+    use App\Vendedor;
 
     // Implementar un metodo para obtener todas las propiedades
     $propiedades = Propiedad::all();
+    $vendedores = Vendedor::all();
+
+    debuguear($vendedores);
 
     // Muestra mensaje condicional
     $resultado = $_GET['resultado'] ?? null;
@@ -20,12 +24,6 @@
             $propiedad = Propiedad::find($id);
 
             $propiedad->eliminar();
-
-
-
-
-
-
 
         }
 
