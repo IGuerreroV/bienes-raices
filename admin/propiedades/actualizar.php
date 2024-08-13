@@ -1,5 +1,6 @@
 <?php
     use App\Propiedad;
+use Intervention\Image\Colors\Profile;
 
     require '../../includes/app.php';
      // Autenticado
@@ -25,7 +26,7 @@
     $resultado = mysqli_query($db, $consulta);
 
     // Arreglo con mensajes de errores
-    $errores = [];
+    $errores = Propiedad::getErrores();
 
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,56 +36,7 @@
 
         $propiedad->sincronizar($args);
 
-        debuguear($propiedad);
-
-        // echo "<pre>";
-        // var_dump($_POST);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // var_dump($_FILES);
-        // echo "</pre>";
-        
-        // Asignar files hacia una variable
-        $imagen = $_FILES['imagen'];
-
-        if(!$titulo) {
-            $errores[] = 'Debes añadir un titulo';
-        }
-
-        if(!$precio) {
-            $errores[] = 'El precio es Obligatorio';
-        }
-
-        if(strlen($descripcion) < 50) {
-            $errores[] = 'La descripción es obligatoria y debe tener al menos 50 caracteres';
-        }
-
-        if(!$habitaciones) {
-            $errores[] = 'El número de habitaciones es obligatorio';
-        }
-
-        if(!$wc) {
-            $errores[] = 'El número de Baños  es obligatorio';
-        }
-
-        if(!$estacionamiento) {
-            $errores[] = 'El número de lugares de estacionamiento es obligatorio';
-        }
-
-        if(!$vendedores_id) {
-            $errores[] = 'Elige un vendedor';
-        }
-
-        // Validar por tamaño (1mb máximo)
-        $medida = 1000 * 1000;
-        if($imagen['size'] > $medida) {
-            $errores[] = 'La imagen es muy pesada';
-        }
-
-        // echo "<pre>";
-        // var_dump($errores);
-        // echo "</pre>";
+        $errores = $propiedad->validar();
 
         // Revisar que el array de errores este vacio
         if(empty($errores)) {
