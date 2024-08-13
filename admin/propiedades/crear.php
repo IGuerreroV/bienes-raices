@@ -28,6 +28,8 @@
         /* Crea una nueva Instancia */
         $propiedad = new Propiedad($_POST['propiedad']);
 
+        debuguear($propiedad);
+
         /* SUBIDA DE ARCHIVOS */
         // Generar un nombre unico
         $nombreImagen = md5( uniqid( rand(), true ) ) . '.jpg';

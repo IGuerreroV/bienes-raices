@@ -1,6 +1,7 @@
 <?php
     use App\Propiedad;
-use Intervention\Image\Colors\Profile;
+    use Intervention\Image\ImageManager as Image;
+    use Intervention\Image\Drivers\Gd\Driver;
 
     require '../../includes/app.php';
      // Autenticado
@@ -36,34 +37,27 @@ use Intervention\Image\Colors\Profile;
 
         $propiedad->sincronizar($args);
 
+        // Validacion
         $errores = $propiedad->validar();
+
+        // Subida de archivos
+        // Generar un nombre unico
+        $nombreImagen = md5( uniqid( rand(), true ) ) . '.jpg';
+
+        if($_FILES['propiedad']['tmp_name']['imagen']) {
+            $manager = new Image(Driver::class);
+            $image = $manager->read($_FILES['propiedad']['tmp_name']['imagen'])->cover(800,600);
+            $propiedad->setImagen($nombreImagen);
+        }
+
+        debuguear($propiedad);
 
         // Revisar que el array de errores este vacio
         if(empty($errores)) {
 
-            // Crear carpeta'
-            $carpetaImagenes = '../../imagenes/';
+            
 
-            if(!is_dir($carpetaImagenes)) {
-                mkdir($carpetaImagenes);
-            }
-
-            $nombreImagen = '';
-
-            /* SUBIDA DE ARCHIVOS */
-
-            if($imagen['name']) {
-                // Eliminar la imagen previa
-                unlink($carpetaImagenes . $propiedad['imagen']);
-
-                // Generar un nombre unico
-                $nombreImagen = md5( uniqid( rand(), true ) ) . '.jpg';
-
-                // Subir imagen
-                move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-            } else {
-                $nombreImagen = $propiedad['imagen'];
-            }
+            exit;
 
             // Insertar en la base de datos
             $query = "UPDATE propiedades SET titulo = '{$titulo}', precio = '{$precio}', imagen = '{$nombreImagen}', descripcion = '{$descripcion}', habitaciones = {$habitaciones}, wc = {$wc}, estacionamiento = {$estacionamiento}, vendedores_id = {$vendedores_id} WHERE id = {$id}";
