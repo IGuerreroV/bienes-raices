@@ -49,30 +49,13 @@
             $image = $manager->read($_FILES['propiedad']['tmp_name']['imagen'])->cover(800,600);
             $propiedad->setImagen($nombreImagen);
         }
-
-        debuguear($propiedad);
-
         // Revisar que el array de errores este vacio
         if(empty($errores)) {
+            // Almacenar la imagen
+            $image->save(CARPETA_IMAGENES . $nombreImagen);
 
-            
-
-            exit;
-
-            // Insertar en la base de datos
-            $query = "UPDATE propiedades SET titulo = '{$titulo}', precio = '{$precio}', imagen = '{$nombreImagen}', descripcion = '{$descripcion}', habitaciones = {$habitaciones}, wc = {$wc}, estacionamiento = {$estacionamiento}, vendedores_id = {$vendedores_id} WHERE id = {$id}";
-
-            // echo $query;
-
-            $resultado = mysqli_query($db, $query);
-
-            if($resultado) {
-                // Redireccionar al usuario.
-                header('Location: /admin?resultado=2');
-            }
+            $propiedad->guardar();
         }
-
-        
     }
 
     incluirTemplate('header');
