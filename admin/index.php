@@ -54,6 +54,7 @@
         <?php endif; ?>
 
         <a class="boton boton-verde" href="/admin/propiedades/crear.php">Nueva Propiedad</a>
+        <a class="boton boton-amarillo" href="/admin/vendedores/crear.php">Nuevo(a) Vendedor</a>
 
         <h2>Propiedades</h2>
         <table class="propiedades">

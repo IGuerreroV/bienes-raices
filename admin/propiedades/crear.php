@@ -1,5 +1,5 @@
 <?php
-    // Autenticado
+
     require '../../includes/app.php';
 
     use App\Propiedad;
