@@ -33,6 +33,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image = $manager->read($_FILES['vendedor']['tmp_name']['imagen'])->cover(800, 600);
         $vendedor->setImagen($nombreImagen);
     }
+
+    // Validar que no haya campos vacios
+    $errores = $vendedor->validar();
+
+    // No hay errores
     if(empty($errores)) {
         // Crea carpeta para subir imagenes
         if(!is_dir($carpetaImagenes)) {
