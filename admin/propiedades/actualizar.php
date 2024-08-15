@@ -40,6 +40,9 @@
         // Validacion
         $errores = $propiedad->validar();
 
+        // Obtener la carpeta de imagenes correspondiente
+        $carpetaImagenes = getCarpetaImagenes($tipo);
+        
         // Subida de archivos
         // Generar un nombre unico
         $nombreImagen = md5( uniqid( rand(), true ) ) . '.jpg';
@@ -53,7 +56,7 @@
         if(empty($errores)) {
             // Almacenar la imagen
             if($_FILES['propiedad']['tmp_name']['imagen']) {
-                $image->save(CARPETA_IMAGENES . $nombreImagen);
+                $image->save($carpetaImagenes . $nombreImagen);
             }
             
             $propiedad->guardar();

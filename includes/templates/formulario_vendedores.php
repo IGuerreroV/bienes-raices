@@ -14,4 +14,11 @@
 
     <label for="telefono">Teléfono:</label>
     <input type="text" id="telefono" name="vendedor[telefono]" placeholder="telefono Vendedor(a)" value="<?php echo s( $vendedor->telefono ); ?>">
+
+    <label for="imagen">Imagen:</label>
+    <input type="file" id="imagen" accept="image/jpeg, image/png" name="vendedor[imagen]">
+    <?php if($vendedor->imagen): ?>
+        <img class="image-small" src="/imagenes/vendedores/<?php echo $vendedor->imagen; ?>" >
+    <?php endif; ?>
+
 </fieldset>

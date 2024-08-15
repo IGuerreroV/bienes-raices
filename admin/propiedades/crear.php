@@ -21,9 +21,12 @@
 
     // Ejecutar el codigo despues de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
         /* Crea una nueva Instancia */
         $propiedad = new Propiedad($_POST['propiedad']);
+        $tipo = 'propiedades';
+
+        // Obtener la carpeta de imagenes correspondiente
+        $carpetaImagenes = getCarpetaImagenes($tipo);
 
         /* SUBIDA DE ARCHIVOS */
         // Generar un nombre unico
@@ -43,10 +46,8 @@
         // echo "<pre>";
         // var_dump($_POST);
         // echo "</pre>";
-
-        // echo "<pre>";
-        // var_dump($_FILES);
-        // echo "</pre>";
+        
+        // debuguear($carpetaImagenes . $nombreImagen);
 
         // echo "<pre>";
         // var_dump($errores);
@@ -56,18 +57,16 @@
         if(empty($errores)) {
 
             // Crear la carpeta para subir imagenes
-            if(!is_dir(CARPETA_IMAGENES)) {
-                mkdir(CARPETA_IMAGENES);
+            if(!is_dir($carpetaImagenes)) {
+                mkdir($carpetaImagenes);
             }
 
             // Guarda la imagen en el servidor
-            $image->save(CARPETA_IMAGENES . $nombreImagen);
+            $image->save($carpetaImagenes . $nombreImagen);
 
             // Guarda en la base de datos
             $propiedad->guardar();
-
         }
-        
     }
 
     // Incluye un template

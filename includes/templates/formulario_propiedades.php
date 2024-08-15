@@ -11,7 +11,7 @@
     <input type="file" id="imagen" accept="image/jpeg, image/png" name="propiedad[imagen]">
 
     <?php if($propiedad->imagen): ?>
-        <img class="imagen-small" src="/imagenes/<?php echo $propiedad->imagen ?>">
+        <img class="imagen-small" src="/imagenes/propiedades/<?php echo $propiedad->imagen ?>">
     <?php endif; ?>
     <label for="descripcion">Descripción:</label>
     <textarea id="descripcion" name="propiedad[descripcion]"><?php echo s( $propiedad->descripcion); ?></textarea>

@@ -118,10 +118,17 @@ class  ActiveRecord {
 
     // Eliminar el archivo
     public function borrarImagen() {
+        // Obtener la carpeta de imagenes correspondiente
+        $tipo = static::$tabla;
+        $carpetaImagenes = getCarpetaImagenes($tipo);
+
+         // Mostrar la ruta completa para depuración
+        //debuguear($carpetaImagenes . $this->imagen);
+
         // Comprobar si existe el archivo
-        $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+        $existeArchivo = file_exists($carpetaImagenes . $this->imagen);
         if($existeArchivo) {
-            unlink(CARPETA_IMAGENES . $this->imagen);
+            unlink($carpetaImagenes . $this->imagen);
         }
     }
 

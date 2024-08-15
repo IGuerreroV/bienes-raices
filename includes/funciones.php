@@ -3,7 +3,19 @@
 
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCIONES_URL', __DIR__ . 'funciones.php');
-define('CARPETA_IMAGENES', __DIR__ . '/../imagenes/');
+// define('CARPETA_IMAGENES', __DIR__ . '/../imagenes/');
+
+function getCarpetaImagenes(string $tipo) {
+    $carpetaImagenes = __DIR__ . '/../imagenes/';
+
+    if($tipo === 'propiedades') {
+        $carpetaImagenes .= 'propiedades/';
+    } else if($tipo === 'vendedores') {
+        $carpetaImagenes .= 'vendedores/';
+    }
+
+    return $carpetaImagenes;
+}
 
 function incluirTemplate(string $nombre, bool $inicio = false) {
     include TEMPLATES_URL . "/{$nombre}.php";
