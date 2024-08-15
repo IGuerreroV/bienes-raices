@@ -7,6 +7,7 @@
     require '../../includes/app.php';
      // Autenticado
     estaAutenticado();
+    $tipo = 'propiedades';
 
     // Validar la URL por ID valido
     $id = $_GET['id'];
